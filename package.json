@@ -1,0 +1,17 @@
+{
+  "name": "efuktbot",
+  "version": "1.0.0",
+  "description": "A bot that goes to efukt and get's a random video/image",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "TJBK",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.0.0",
+    "jsdom": "^9.12.0",
+    "request": "^2.81.0",
+    "to-markdown": "^3.0.4"
+  }
+}
