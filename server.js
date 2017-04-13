@@ -5,6 +5,7 @@ const request = require('request');
 const jsdom = require("jsdom");
 const toMarkdown = require('to-markdown');
 const url = 'http://efukt.com/random.php';
+const token = '';
 
 //vars
 var title, desc, img;
@@ -19,6 +20,7 @@ client.on('ready', () => {
   genNew();
 });
 
+//Get a new image/video from efukt
 function genNew() {
   request({
     url: url,
@@ -26,6 +28,7 @@ function genNew() {
   }, function (err, res, body) {
     newUrl = res.headers.location;
     console.log(newUrl);
+    //Parse the page
     jsdom.env({
       url: newUrl,
       scripts: ["https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"],
@@ -39,6 +42,7 @@ function genNew() {
   });
 }
 
+//Get the elements we need
 function getNeeds() {
   title = document.querySelector('.title').textContent;
   desc = document.querySelector('.desc').innerHTML;
@@ -54,12 +58,14 @@ desc: ${desc}
 Poster: ${img}`)
 }
 
+//Checks to see if the command has been called
 client.on('message', msg => {
   if (msg.content === prefix + 'efukt') {
     genNew();
     const embed = new Discord.RichEmbed().setTitle(title).setColor("#ffffff").setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
-    msg.channel.sendEmbed(embed);
+    msg.channel.sendEmbed(embed).catch(console.error);
   };
 });
 
-client.login('MzAxOTEzMzE1NDgyMDA5NjAw.C9B6Mg.ugzvbW7QqQT1sJkqmWv7EOoQNCA');
+//Login to discord as a bot
+client.login(token).then(atoken => console.log('logged in with token ' + atoken)).catch(console.error);
