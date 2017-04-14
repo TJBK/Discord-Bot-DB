@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A bot that goes to efukt and get's a random video/image",
   "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TJBK/Efukt-Discord-Bot"
+  },
   "scripts": {
     "start": "node server.js"
   },
