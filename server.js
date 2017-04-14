@@ -9,8 +9,7 @@ const url = 'http://efukt.com/random.php';
 const token = '';
 
 //vars
-var title, desc, img;
-var newUrl;
+var title, colour, desc, img, newUrl, isVideo;
 
 //lets
 let prefix = "<!";
@@ -49,10 +48,18 @@ function getNeeds() {
   desc = document.querySelector('.desc').innerHTML;
   if (document.querySelector('#efukt_video')) {
     img = document.querySelector('#efukt_video').getAttribute('poster');
+    isVideo = true;
     console.log("Yes it's a video");
   } else {
     img = document.querySelector('.image_content').src;
+    isVideo = false;
     console.log("Not a video");
+  }
+  //Sets the colour for rich embed
+  if (isVideo) {
+    colour = "#008000";
+  } else {
+    colour = "#FF0000";
   }
   console.log(`Title: ${title}
 desc: ${desc}
@@ -63,7 +70,7 @@ Poster: ${img}`);
 client.on('message', msg => {
   if (msg.content === prefix + 'efukt') {
     genNew();
-    const embed = new Discord.RichEmbed().setTitle(title).setColor("#ffffff").setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
+    const embed = new Discord.RichEmbed().setTitle(title).setColor(colour).setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
     msg.channel.sendEmbed(embed).catch(console.error);
   }
 });
