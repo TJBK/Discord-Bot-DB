@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 //Needs
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -55,7 +56,7 @@ function getNeeds() {
   }
   console.log(`Title: ${title}
 desc: ${desc}
-Poster: ${img}`)
+Poster: ${img}`);
 }
 
 //Checks to see if the command has been called
@@ -64,7 +65,7 @@ client.on('message', msg => {
     genNew();
     const embed = new Discord.RichEmbed().setTitle(title).setColor("#ffffff").setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
     msg.channel.sendEmbed(embed).catch(console.error);
-  };
+  }
 });
 
 //Login to discord as a bot
