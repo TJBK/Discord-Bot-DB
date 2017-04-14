@@ -16,6 +16,7 @@ let prefix = "<!";
 
 //Start bot
 client.on('ready', () => {
+  client.user.setGame(prefix + "efukt");
   console.log(`Logged in as ${client.user.username}!`);
   genNew();
 });
