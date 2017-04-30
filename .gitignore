@@ -13,5 +13,8 @@ pids
 node_modules/
 jspm_packages/
 
+#test DB
+*.db
+
 # Optional npm cache directory
 .npm

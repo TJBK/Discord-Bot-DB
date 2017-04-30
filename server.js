@@ -5,19 +5,26 @@ const client = new Discord.Client();
 const request = require('request');
 const jsdom = require("jsdom");
 const toMarkdown = require('to-markdown');
+const Datastore = require('nedb');
 const url = 'http://efukt.com/random.php';
-const token = '';
+const token = 'MzA4MDUwMjQ2ODg0MTMwODQw.C-bNqg.GnHk6JO19QkETIP2IJyEHjjOFs8';
+
+//DB
+var dbs = new Datastore({ filename: 'server.db', autoload: true });
+var dbv = new Datastore({ filename: 'vid.db', autoload: true });
+dbs.loadDatabase();
+dbv.loadDatabase();
 
 //vars
 var title, colour, desc, img, newUrl, isVideo;
 
 //lets
-let prefix = "<!";
+//let prefix = "<!";
 
 //Start bot
 client.on('ready', () => {
-  client.user.setGame(prefix + "efukt");
-  console.log(`Logged in as ${client.user.username}!`);
+  client.user.setGame("DO !help");
+  console.log(`Logged in as ${client.user.username}! We are currently serving ${client.guilds.array().length} servers.`);
   genNew();
 });
 
@@ -62,18 +69,54 @@ function getNeeds() {
   } else {
     colour = "#FF0000";
   }
-  console.log(`Title: ${title}
-desc: ${desc}
-Poster: ${img}`);
+  console.log(`Title: ${title}\ndesc: ${desc}\nPoster: ${img}`);
+  dbv.insert({
+    title: title,
+    description: desc,
+    posterURL: img
+  });
 }
+
+function checkCommand(msg, ids) {
+  dbs.findOne({serverID: ids}, function (err, docs) {
+    if (msg.author.id != client.user.id) {
+      if (msg.content === docs.prefix + 'efukt') {
+        genNew();
+        const embed = new Discord.RichEmbed().setTitle(title).setColor(colour).setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
+        msg.channel.sendEmbed(embed).catch(console.error);
+      }
+    }
+  });
+}
+
+client.on('guildCreate', (guild, msg) => {
+  let id = guild.id;
+  guild.defaultChannel.sendMessage(`${guild.owner.displayName} you need to agree to the bot since it\'s NSFW do /agree`).catch(console.error);
+  dbs.insert({
+    serverID: id,
+    agreed: false,
+    prefix: "!",
+    usesBot: true
+  });
+});
 
 //Checks to see if the command has been called
 client.on('message', msg => {
-  if (msg.content === prefix + 'efukt') {
-    genNew();
-    const embed = new Discord.RichEmbed().setTitle(title).setColor(colour).setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
-    msg.channel.sendEmbed(embed).catch(console.error);
-  }
+  let ids = msg.guild.id;
+  dbs.findOne({serverID: ids}, function (err, docs) {
+    if (msg.author.id != client.user.id) {
+      if (msg.content === docs.prefix + 'agree') {
+        dbs.update({serverID: ids}, {$set: {agreed: true}}, {multi: true}, function (err, numReplaced) {
+          msg.channel.sendMessage('**YAY** The bot is now active on this server.\nIgnore it asking to get the owner to agree to the bot since I messed up choosing a DB').catch(console.error);
+        });
+      }
+      if (docs.agreed === true) {
+        checkCommand(msg, ids);
+      }else{
+        msg.reply('Please get the server owner to agree to the bot.');
+      }
+    }
+  });
 });
 
 //Login to discord as a bot
