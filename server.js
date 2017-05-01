@@ -79,11 +79,42 @@ function getNeeds() {
 
 function checkCommand(msg, ids) {
   dbs.findOne({serverID: ids}, function (err, docs) {
-    if (msg.author.id != client.user.id) {
-      if (msg.content === docs.prefix + 'efukt') {
-        genNew();
-        const embed = new Discord.RichEmbed().setTitle(title).setColor(colour).setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
-        msg.channel.sendEmbed(embed).catch(console.error);
+    const pre = docs.prefix;
+    if (msg.author.id != client.user.id && (msg.content.startsWith(pre))) {
+      var cmdTXT = msg.content.split(' ')[0].substring(pre.length);
+      var suffix = msg.content.substring(cmdTXT.length+pre.length+1);
+      if (msg.isMentioned(client.user)) {
+        try {
+          cmdTXT = msg.content.split(" ")[1];
+          suffix = msg.content.substring(bot.user.mention().length+cmdTXT.length+pre.length+1);
+        } catch(e) {
+          msg.channel.sendMessage('You called?');
+          return;
+        }
+      }
+
+      if (cmdTXT === "setprefix") {
+        dbs.update({serverID: ids}, {$set: {prefix: suffix}}, {multi: true}, function (err, numReplaced) {
+          msg.channel.sendMessage(`Your server prefix has been changed to **${suffix}**`).catch(console.error);
+        });
+      }
+
+      if (cmdTXT === "setnsfw") {
+        dbs.update({serverID: ids}, {$set: {nswfChannel: msg.channel.id}}, {multi: true}, function (err, numReplaced) {
+          msg.channel.sendMessage(`This is set to the nsfw channel **${msg.channel.id}**\nIgnore the message above since in-memory databse`).catch(console.error);
+        });
+      }
+
+      if (docs.nswfChannel > 0){
+        if (docs.nswfChannel === msg.channel.id) {
+          if (cmdTXT === "efukt") {
+            genNew();
+            const embed = new Discord.RichEmbed().setTitle(title).setColor(colour).setDescription(toMarkdown(desc)).setURL(newUrl).setImage(img);
+            msg.channel.sendEmbed(embed).catch(console.error);
+          }
+        }
+      } else {
+        msg.channel.sendMessage(`You need to set a NSFW channel by ${pre}setnsfw`).catch(console.error);
       }
     }
   });
@@ -91,12 +122,13 @@ function checkCommand(msg, ids) {
 
 client.on('guildCreate', (guild, msg) => {
   let id = guild.id;
-  guild.defaultChannel.sendMessage(`${guild.owner.displayName} you need to agree to the bot since it\'s NSFW do /agree`).catch(console.error);
+  guild.defaultChannel.sendMessage(`${guild.owner.displayName} you need to agree to the bot since it\'s NSFW do !agree`).catch(console.error);
   dbs.insert({
     serverID: id,
     agreed: false,
     prefix: "!",
-    usesBot: true
+    usesBot: true,
+    nswfChannel: 0
   });
 });
 
