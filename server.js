@@ -1,15 +1,11 @@
-/*jshint esversion: 6 */
-//Needs
+/*jshint esversion: 6*/
 const discord = require("discord.js");
 const client = new discord.Client();
-const load = require("./load")
+const load = require("./load");
 const dbcon = require("./db");
 const co = require("./commands");
 const token = 'MzA4MDUwMjQ2ODg0MTMwODQw.C-bNqg.GnHk6JO19QkETIP2IJyEHjjOFs8';
 var cmd = [];
-
-//lets
-//let prefix = "<!";
 
 //Start bot
 client.on('ready', () => {
@@ -20,9 +16,6 @@ client.on('ready', () => {
   */
 });
 
-//Get a new image/video from efukt
-
-
 function checkCommand(msg, ids) {
   dbs.findOne({serverID: ids}, function (err, docs) {
     const pre = docs.prefix;
@@ -32,9 +25,9 @@ function checkCommand(msg, ids) {
       var cmd = co.commands[cmdTXT];
 
       if (cmdTXT === "help") {
-        let cmds = suffix.split(" ").filter(function(cmd){return commands[cmd]});
+        let cmds = suffix.split(" ").filter(function(cmd){return commands[cmd];});
         let cmd = cmds[i];
-        var info = 
+        var info = {};
       }
 
       if (cmd) {
@@ -91,11 +84,11 @@ exports.addCommand = function(commandName, commandObject){
   } catch(err){
     console.log(err);
   }
-}
+};
 
 exports.commandCount = function(){
     return Object.keys(commands).length;
-}
+};
 
 
 //Login to discord as a bot

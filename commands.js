@@ -1,5 +1,6 @@
+/*jshint esversion: 6*/
 const discord = require("discord.js");
-const mainBot = require("./server")
+const mainBot = require("./server");
 const dbcon = require("./db");
 const toMarkdown = require('to-markdown');
 const request = require('request');
@@ -54,11 +55,11 @@ exports.commands = {
         }
     }
   }
-}
+};
 
 exports.newVid = function(){
     genNew();
-}
+};
 
 var title, colour, desc, img, newUrl, isVideo;
 

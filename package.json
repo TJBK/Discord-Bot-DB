@@ -1,7 +1,7 @@
 {
   "name": "efuktbot",
   "version": "1.0.0",
-  "description": "A bot that goes to efukt and get's a random video/image",
+  "description": "A bot that goes to efukt and gets a random video/image",
   "main": "server.js",
   "repository": {
     "type": "git",

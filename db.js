@@ -1,4 +1,4 @@
-//DB
+/*jshint esversion: 6*/
 const mongoose = require('mongoose');
 const assert = require('assert');
 const mongodbURL = 'mongodb://127.0.0.1:27017/botMain';

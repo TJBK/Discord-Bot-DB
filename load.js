@@ -1,13 +1,6 @@
+/*jshint esversion: 6*/
 const client = require("./server.js");
-const coms = require("./commands.js")
-const fs = require('fs');
-const path = require('path');
-
-function getDirectories(srcpath) {
-    return fs.readdirSync(srcpath).filter(function(file) {
-        return fs.statSync(path.join(srcpath, file)).isDirectory();
-    });
-}
+const coms = require("./commands.js");
 
 exports.init = function(){
     start();
@@ -19,5 +12,5 @@ function start(){
         client.addCommand(coms.commands[i], coms.commands[coms.commands[i]]);
         commandCount++;
     }
-    console.log("Loaded " + client.commandCount() + " chat commands")
+    console.log("Loaded " + client.commandCount() + " chat commands");
 }
