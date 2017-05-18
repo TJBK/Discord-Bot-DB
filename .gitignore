@@ -13,7 +13,10 @@ pids
 node_modules/
 jspm_packages/
 
-#test DB
+# VS Code
+.vscode
+
+# test DB
 *.db
 
 # Optional npm cache directory
