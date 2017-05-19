@@ -1,7 +1,7 @@
 {
-  "name": "efuktbot",
+  "name": "discord-bot-db",
   "version": "1.0.0",
-  "description": "A bot that goes to efukt and gets a random video/image",
+  "description": "At first this was me messing with JSDom now it has a DB",
   "main": "server.js",
   "repository": {
     "type": "git",
@@ -14,9 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^11.0.0",
-    "mongojs": "*",
     "jsdom": "^9.12.0",
-    "nedb": "^1.8.0",
+    "mongoose": "^4.10.0",
     "request": "^2.81.0",
     "to-markdown": "^3.0.4"
   }

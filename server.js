@@ -24,12 +24,6 @@ function checkCommand(msg, ids) {
       var suffix = msg.content.substring(cmdTXT.length+pre.length+1);
       var cmd = co.commands[cmdTXT];
 
-      if (cmdTXT === "help") {
-        let cmds = suffix.split(" ").filter(function(cmd){return commands[cmd];});
-        let cmd = cmds[i];
-        var info = {};
-      }
-
       if (cmd) {
         try {
           cmd.process(client,msg,suffix,ids,docs);

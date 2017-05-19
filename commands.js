@@ -44,8 +44,9 @@ exports.commands = {
         msg.channel.sendMessage(`${msg.author.username} you have reset the bot`).catch(console.error);
       });
     }
-  },
-  "efukt": {
+  }
+  //Remove the efukt thing since it was just me messing with JSDom
+  /*"efukt": {
     description: "Get a video from efukt",
     process: function(client,msg,suffix,ids) {
         if (msg.channel.id === docs.nswfChannel) {
@@ -54,7 +55,7 @@ exports.commands = {
             msg.channel.sendEmbed(embed).catch(console.error);
         }
     }
-  }
+  }*/
 };
 
 exports.newVid = function(){
