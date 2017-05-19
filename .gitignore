@@ -14,7 +14,7 @@ node_modules/
 jspm_packages/
 
 # VS Code
-.vscode
+.vscode/
 
 # test DB
 *.db
